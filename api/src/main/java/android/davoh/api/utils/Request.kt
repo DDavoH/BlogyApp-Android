@@ -62,6 +62,7 @@ abstract class Request<Data> {
                     }
                 }, {
                     Log.e("ERROR", "Error en el observer")
+                    httpError("No hay conexión a internet", 500)
                 }
             )
         } catch (th: Throwable) {

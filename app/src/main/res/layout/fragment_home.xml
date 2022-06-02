@@ -12,9 +12,26 @@
        tools:listitem="@layout/item_entry"
        />
 
+   <com.google.android.material.floatingactionbutton.FloatingActionButton
+       android:id="@+id/btn_search"
+       android:layout_width="wrap_content"
+       android:layout_height="wrap_content"
+       app:layout_constraintBottom_toBottomOf="parent"
+       app:layout_constraintEnd_toEndOf="parent"
+       android:layout_margin="20dp"
+       android:src="@drawable/ic_search"
+       app:backgroundTint="@color/orange_200"
+       android:tint="@android:color/white"
+       />
+
    <include
        android:id="@+id/loader"
        android:visibility="gone"
        layout="@layout/layout_loader"/>
+
+   <include
+       android:id="@+id/search_layout"
+       android:visibility="invisible"
+       layout="@layout/layout_search_entry"/>
 
 </androidx.constraintlayout.widget.ConstraintLayout>

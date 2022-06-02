@@ -2,6 +2,7 @@ package android.davoh.blogyapp.presentation.home
 
 import android.davoh.api.requests.CreatePostRequest
 import android.davoh.api.requests.GeneralResponse
+import android.davoh.api.requests.SearchPostRequest
 import android.davoh.api.responses.posts.PostsResponse
 import android.davoh.api.utils.ResultConsumer
 import android.davoh.api.utils.ResultSimple
@@ -20,6 +21,26 @@ class HomeViewModel @Inject constructor(private val repository: PostRepository) 
     fun getPosts(){
         loader.postValue(true)
         repository.getPosts(object : ResultConsumer<PostsResponse> {
+            override fun consume(result: ResultSimple<PostsResponse>) {
+                if (result.isSuccessful() && result.result != null) {
+                    posts.postValue(result.result!!)
+                } else if (result.isSuccessful()) {
+                    emptyResponse.postValue(true)
+                } else if (result.isUnauthorized()) {
+                    isUnauthenticated.postValue(true)
+                } else if (result.isHttpError()) {
+                    httpError.postValue(result.error)
+                } else {
+                    errorNoConnection.postValue(true)
+                }
+                loader.postValue(false)
+            }
+        })
+    }
+    
+    fun searchPost(query:String){
+        loader.postValue(true)
+        repository.searchPost(SearchPostRequest(query),object : ResultConsumer<PostsResponse> {
             override fun consume(result: ResultSimple<PostsResponse>) {
                 if (result.isSuccessful() && result.result != null) {
                     posts.postValue(result.result!!)

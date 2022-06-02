@@ -9,4 +9,7 @@
     <string name="entendido">Entendido</string>
     <string name="detalles">Detalle entrada</string>
     <string name="date">Fecha</string>
+    <string name="search">Buscar</string>
+    <string name="apply">Aplicar filtro</string>
+    <string name="introduce_busqueda">Introduce tu busqueda</string>
 </resources>

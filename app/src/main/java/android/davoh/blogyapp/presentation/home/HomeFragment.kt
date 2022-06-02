@@ -1,5 +1,7 @@
 package android.davoh.blogyapp.presentation.home
 
+import android.app.Activity
+import android.content.Context
 import android.content.Intent
 import android.davoh.api.responses.posts.Posts
 import android.davoh.blogyapp.databinding.FragmentHomeBinding
@@ -9,14 +11,12 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import androidx.fragment.app.Fragment
+import android.view.inputmethod.InputMethodManager
 import androidx.fragment.app.activityViewModels
-import androidx.fragment.app.viewModels
 import androidx.lifecycle.Observer
 import androidx.recyclerview.widget.LinearLayoutManager
-import com.google.gson.Gson
 import dagger.hilt.android.AndroidEntryPoint
-import timber.log.Timber
+
 
 @AndroidEntryPoint
 class HomeFragment : BaseFragment() {
@@ -53,6 +53,25 @@ class HomeFragment : BaseFragment() {
                 startActivity(intent)
             }
         })
+        
+        binding.btnSearch.setOnClickListener {
+            binding.searchLayout.layoutSearchEntry.visibility = View.VISIBLE
+        }
+        binding.searchLayout.btnRetry.setOnClickListener {
+            if(binding.searchLayout.etSearch.text.isEmpty()){
+                viewModel.getPosts()
+            }else{
+                viewModel.searchPost(binding.searchLayout.etSearch.text.toString())
+            }
+            binding.searchLayout.layoutSearchEntry.visibility = View.GONE
+            binding.searchLayout.etSearch.setText("")
+            hideKeyboardFrom(requireContext(), binding.root)
+        }
+    }
+    
+    fun hideKeyboardFrom(context: Context, view: View) {
+        val imm = context.getSystemService(Activity.INPUT_METHOD_SERVICE) as InputMethodManager
+        imm.hideSoftInputFromWindow(view.windowToken, 0)
     }
     
     private fun observables(){
